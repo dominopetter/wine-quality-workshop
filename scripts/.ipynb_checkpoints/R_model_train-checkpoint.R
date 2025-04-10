@@ -1,7 +1,7 @@
 library(mlflow)
 print("Reading in data")
 project_name <- Sys.getenv('DOMINO_PROJECT_NAME')
-path <- paste('/mnt/data/wine-quality-workshop/WineQualityData.csv')
+path <- paste('/mnt/data/wine-workshop-development/WineQualityData.csv')
 path <- gsub(" ", "", path, fixed = TRUE)
 data <- read.csv(file=path)
 head(data)
