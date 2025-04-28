@@ -19,7 +19,7 @@ domino_project.job_start(command='scripts/sklearn_model_train_V2.py')
 
 # Then our xgboost written in R
 print('Kicking off R model training')
-domino_project.job_start(command='scripts/R_model_train.R')
+domino_project.job_start(command='scripts/R_model_train_V2.R')
 
 # And finally our h2o automl model training
 print('Kicking off h2o model training')
