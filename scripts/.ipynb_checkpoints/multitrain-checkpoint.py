@@ -15,7 +15,7 @@ domino_project =domino.Domino(project = str(os.environ.get('DOMINO_PROJECT_OWNER
 
 # First we will start our sklearn model training 
 print('Kicking off sklearn model training')
-domino_project.job_start(command='scripts/sklearn_model_train.py')
+domino_project.job_start(command='scripts/sklearn_model_train_V2.py')
 
 # Then our xgboost written in R
 print('Kicking off R model training')
