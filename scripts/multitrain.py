@@ -23,6 +23,6 @@ domino_project.job_start(command='scripts/R_model_train_V2.R')
 
 # And finally our h2o automl model training
 print('Kicking off h2o model training')
-domino_project.job_start(command='scripts/h2o_model_train.py')
+domino_project.job_start(command='scripts/h2o_model_train_V2.py')
 
 print('Done!')
