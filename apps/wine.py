@@ -98,15 +98,28 @@ with tab1:
             result = get_prediction(feat1, feat2, feat3, feat4, feat5)
 
         if result:
-            # Parsing logic based on R code structure: result$result[[1]][[1]]
             try:
-                # Adjust these indices if your specific API response structure differs slightly
-                # The R code implied a nested list structure
-                pred_value = result.get('result', [[None]])[0][0]
-                
-                if pred_value is None:
-                    st.error("Invalid prediction result structure.")
+                # Get the 'result' part of the response
+                raw_prediction = result.get('result')
+
+                # Helper logic to handle different JSON structures safely
+                # Case A: structure is [[5.67]] (Nested list)
+                if isinstance(raw_prediction, list) and isinstance(raw_prediction[0], list):
+                    pred_value = raw_prediction[0][0]
+                # Case B: structure is [5.67] (Flat list) - This is likely what is happening
+                elif isinstance(raw_prediction, list):
+                    pred_value = raw_prediction[0]
+                # Case C: structure is just 5.67 (Direct value)
                 else:
+                    pred_value = raw_prediction
+
+                # Final check to ensure we have a valid number
+                if pred_value is None:
+                    st.error("Could not extract a prediction value.")
+                else:
+                    # Convert to float to be safe
+                    pred_value = float(pred_value)
+
                     model_version = result.get('release', {}).get('model_version_number', 'Unknown')
                     response_time = result.get('model_time_in_ms', 0)
 
@@ -120,10 +133,7 @@ with tab1:
                     # Plot Gauge
                     st.plotly_chart(draw_gauge(pred_value), use_container_width=True)
                     
-                    # Raw output (optional, good for debugging)
-                    with st.expander("View Raw JSON Response"):
-                        st.json(result)
-
             except Exception as e:
                 st.error(f"Error parsing API response: {e}")
-                st.write(result)
+                with st.expander("Debug: View Raw Response"):
+                    st.json(result)
